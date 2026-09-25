@@ -34,7 +34,7 @@ npm test
 npx react-scripts test --watchAll=false
 ```
 
-GitHub Classroom sets `CI=true` and runs `npm test`, which also runs the suite once. On Windows PowerShell the same one-off run is:
+GitHub Actions sets `CI=true`, so `npm test` there also runs the suite once. That step starts on pushes to `main` after the repository is created. On Windows PowerShell the same one-off run is:
 
 ```powershell
 $env:CI="true"; npm test
