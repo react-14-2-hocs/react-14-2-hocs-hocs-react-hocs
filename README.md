@@ -1,12 +1,41 @@
-# React online marathon
+# Advanced Frontend with React.js
 
 ## The tasks of the topic "HOCs"
 
-There are components EntitiesList and EntityDetails in the application.
-These components have similar logic: they both display some external data that is loaded via a method passed in a props. Also, both components display text "Loading..." while the data is being loaded.
+The application has two components, `EntitiesList` and `EntityDetails`.
+Both load external data with a function passed in the `fetchMethod` prop, and both show the text `Loading...` while that data is not available yet.
 
-Please, extract all common logic using HOC.
-Name it "withLoading" and place into the "components" folder.   
-The HOC should contain logic of retrieving data and rendering "Loading..." text while the data is not loaded yet.  
-Also, the HOC should pass down prop _**data**_ with with retrieved data to its wrapped component.  
-Update EntitiesList and EntityDetails to use the HOC.
+Extract the shared logic into a higher-order component.
+
+- Name it `withLoading`.
+- Put it in `src/components/withLoading.js` and export it as the default export.
+- `withLoading` takes a component and returns a new component.
+- The returned component calls `fetchMethod(params)`. `params` is optional: `EntityDetails` passes it, `EntitiesList` does not.
+- `fetchMethod` returns a promise. Until that promise resolves, render the text `Loading...`.
+- When the data has loaded, render the wrapped component and pass the loaded value in a prop named `data`. Pass the other props through (`propsToDisplay`, `onEntityDetailsClick`, and so on). Do not pass `fetchMethod` or `params` to the wrapped component.
+- When `params` changes, load the data again and show `Loading...` until the new request finishes.
+
+Update `EntitiesList` and `EntityDetails` so each file imports `withLoading` from `./withLoading` and calls it. Keep the text they show after the refactor:
+
+- `EntitiesList`: while loading, `Loading...`. After loading, one list item per entity. Each item has a button with the text `👀` and, for every entry of `propsToDisplay`, the text `{label}: {value}` (for example, `Name: John`). Clicking the button calls `onEntityDetailsClick` with that entity's `id`.
+- `EntityDetails`: while loading, `Loading...`. After loading, a heading `{name} Details:` (for example, `John Details:`) and, for every entry of `propsToDisplay`, the text `{label}: {value}`.
+
+## Scripts
+
+```bash
+npm install
+npm start
+npm test
+```
+
+`npm test` starts Jest in watch mode. To run the suite once, use:
+
+```bash
+npx react-scripts test --watchAll=false
+```
+
+GitHub Classroom sets `CI=true` and runs `npm test`, which also runs the suite once. On Windows PowerShell the same one-off run is:
+
+```powershell
+$env:CI="true"; npm test
+```

@@ -1,10 +1,10 @@
 name: GitHub Classroom Workflow
 
-on: [push]
+on:
+  push:
+    branches: [main]
 
 permissions:
-  checks: write
-  actions: read
   contents: read
 
 jobs:
@@ -12,5 +12,17 @@ jobs:
     name: Autograding
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: education/autograding@v1
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # The first push creates the branch (a repo made from this template).
+      # Student tests fail on the starter by design, so they run only after that.
+      - name: Test
+        if: github.event.before != '0000000000000000000000000000000000000000'
+        run: npm test

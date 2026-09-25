@@ -6,7 +6,7 @@ function EntityDetails({ fetchMethod, params, propsToDisplay }) {
   useEffect(() => {
     setEntity(null)
     fetchMethod(params)
-      .then(res => { setEntity(res); console.log('User: ', res) })
+      .then(res => setEntity(res))
   }, [params])
 
   return (

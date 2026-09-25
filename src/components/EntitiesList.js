@@ -6,7 +6,7 @@ function EntitiesList({ onEntityDetailsClick, propsToDisplay, fetchMethod }) {
 
   useEffect(() => {
     fetchMethod()
-      .then(res => { setEntities(res); console.log('Users: ', res) })
+      .then(res => setEntities(res))
   }, [])
 
   return (
